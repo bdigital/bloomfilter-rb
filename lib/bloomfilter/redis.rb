@@ -8,10 +8,11 @@ module BloomFilter
         :seed    => Time.now.to_i,
         :namespace => 'redis',
         :eager  => false,
+        :dbnum => 9,
         :server => {}
       }.merge opts
       @db = @opts.delete(:db) || ::Redis.new(@opts[:server])
-
+      @db.select @opts.delete(:dbnum)
       if @opts[:eager]
         @db.setbit @opts[:namespace], @opts[:size]+1, 1
       end
