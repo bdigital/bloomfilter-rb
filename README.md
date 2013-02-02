@@ -1,6 +1,5 @@
-# BloomFilter(s) in Ruby
+# BloomFilter(s) in Ruby / Without Original Native Support
 
-- Native (MRI/C) counting bloom filter
 - Redis-backed getbit/setbit non-counting bloom filter
 - Redis-backed set-based counting (+TTL) bloom filter
 
@@ -16,35 +15,6 @@ Performance of the Bloom filter depends on a number of variables:
 
 - Determining parameters: [Scalable Datasets: Bloom Filters in Ruby](http://www.igvita.com/2008/12/27/scalable-datasets-bloom-filters-in-ruby/)
 - Applications & reasons behind bloom filter: [Flow analysis: Time based bloom filter](http://www.igvita.com/2010/01/06/flow-analysis-time-based-bloom-filters/)
-
-***
-
-## MRI/C API Example
-
-MRI/C implementation which creates an in-memory filter which can be saved and reloaded from disk.
-
-```ruby
-require 'bloomfilter'
-
-bf = BloomFilter::Native.new(:size => 100, :hashes => 2, :seed => 1, :bucket => 3, :raise => false)
-bf.insert("test")
-bf.include?("test")     # => true
-bf.include?("blah")     # => false
-
-bf.delete("test")
-bf.include?("test")     # => false
-
-# Hash with a bloom filter!
-bf["test2"] = "bar"
-bf["test2"]             # => true
-bf["test3"]             # => false
-
-bf.stats
-# => Number of filter bits (m): 10
-# => Number of filter elements (n): 2
-# => Number of filter hashes (k) : 2
-# => Predicted false positive rate = 10.87%
-```
 
 ***
 
